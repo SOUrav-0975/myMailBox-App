@@ -1,13 +1,13 @@
-import { useRef, useEffect } from "react";
-
+import { useRef,useContext } from "react";
+import AuthContext from "../context/auth-context";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Container, Form, Button, Card, Alert } from "react-bootstrap";
+import { Container, Form, Button, Card } from "react-bootstrap";
 
 const Signin = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  
+  const authContext = useContext(AuthContext);
  
 
   const loginHandler = async (event) => {
@@ -34,7 +34,8 @@ const Signin = () => {
           });
           if(response.ok){
             const data = await response.json();
-            localStorage.setItem("userToken", data.idToken);
+           localStorage.setItem("email", enteredEmail);
+           authContext.login(data.idToken);
             console.log(data)
           }else{
     
@@ -59,7 +60,7 @@ const Signin = () => {
         style={{
           maxWidth: "500px",
           boxShadow:"rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-          
+          marginTop:"100px",
           borderRadius: "13px",
         }}
       >
@@ -100,12 +101,10 @@ const Signin = () => {
             </Form>
           </Card.Body>
         </Card>
-         {/* <div className="w-100 text-center my-4">
+          <div className="w-100 text-center my-4">
           Need an account ? <Link to="/signup">Sign Up</Link>
         </div>
-        <div className="w-100 text-center my-4">
-          <Link onClick={passwordHandler}>Forget Password</Link>
-        </div> */}
+       
       </div> 
     </Container>
   );

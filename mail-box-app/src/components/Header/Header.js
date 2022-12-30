@@ -1,8 +1,16 @@
+import { useContext } from "react";
+import AuthContext from "../../context/auth-context";
+import { NavLink } from "react-router-dom";
+import {Navbar,Container,Nav,Button} from "react-bootstrap";
 
-import {Navbar,Container,Nav} from "react-bootstrap";
 
 const Header = () => {
+const authContext = useContext(AuthContext);
+const isLoggedIn = authContext.isLoggedIn;
 
+    const logoutHandler = () => {
+   authContext.logout()
+    }
     return ( 
 <Navbar collapseOnSelect expand="lg" bg="light" variant="light"  fixed="top"
         style={{
@@ -16,15 +24,19 @@ const Header = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mx-auto"    style={{ color: "black", fontSize: "24px", fontWeight: "500" }}>
-            <Nav.Link href="#">Home</Nav.Link>
+            <Nav.Link to="/" as={NavLink} >Home</Nav.Link>
             
            
           </Nav>
           <Nav className="mx-5"    style={{ color: "black", fontSize: "24px", fontWeight: "500" }}>
-            <Nav.Link href="#deets">Profile</Nav.Link>
-            <Nav.Link eventKey={2} href="#">
-             Login
+            <Nav.Link to="/signin" as={NavLink} >
+                <Button>Login</Button>
             </Nav.Link>
+            {isLoggedIn &&  <Nav.Link to="/signin" as={NavLink} >
+             <Button onClick={logoutHandler}>Logout</Button>
+            </Nav.Link>
+            }
+           
           </Nav>
         </Navbar.Collapse>
       </Container>
